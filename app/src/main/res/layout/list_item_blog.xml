@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="blog"
+            type="com.example.jet2travel.db.BlogEntity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingStart="12dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="12dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_avatar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:cardCornerRadius="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/user_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                app:imageFromUrl="@{blog.user.get(0).avatar}" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/card_avatar"
+            app:layout_constraintStart_toEndOf="@id/card_avatar"
+            app:layout_constraintTop_toTopOf="@id/card_avatar">
+
+            <TextView
+                android:id="@+id/txt_first_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{blog.user.get(0).name}"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/layout_user"
+                app:layout_constraintTop_toTopOf="@id/layout_user" />
+
+            <TextView
+                android:id="@+id/txt_last_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{' '+blog.user.get(0).lastname}"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/txt_first_name"
+                app:layout_constraintTop_toTopOf="@id/layout_user" />
+
+            <TextView
+                android:id="@+id/txt_designation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{blog.user.get(0).designation}"
+                app:layout_constraintStart_toStartOf="@id/layout_user"
+                app:layout_constraintTop_toBottomOf="@id/txt_first_name" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:elapsedTime="@{blog.createdAt}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/blog_image"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:contentDescription="@null"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:scaleType="centerCrop"
+            app:imageFromUrl="@{blog.media.get(0).image}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/card_avatar" />
+
+        <TextView
+            android:id="@+id/txt_context"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{blog.content}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/blog_image" />
+
+        <TextView
+            android:id="@+id/txt_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_context"
+            app:likesFromConverter="@{blog.likes}" />
+
+        <TextView
+            android:id="@+id/txt_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textStyle="bold"
+            app:commentsFromConverter="@{blog.comments}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_context" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_comments" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
