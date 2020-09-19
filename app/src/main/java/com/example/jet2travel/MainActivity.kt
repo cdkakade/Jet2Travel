@@ -2,12 +2,14 @@ package com.example.jet2travel
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jet2travel.blog.BlogAdapter
 import com.example.jet2travel.blog.BlogViewModel
 import com.example.jet2travel.databinding.ActivityMainBinding
-import com.example.jet2travel.db.Result
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var blogViewModel: BlogViewModel
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as App).appComponent.blogComponent().create().inject(this)
         super.onCreate(savedInstanceState)
@@ -33,20 +36,12 @@ class MainActivity : AppCompatActivity() {
         subscribeUi(adapter)
     }
 
+    @ExperimentalCoroutinesApi
     private fun subscribeUi(adapter: BlogAdapter) {
-        blogViewModel.getBlogs().observe(this, Observer { result ->
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    //binding.progressBar.hide()
-                    result.data?.let { adapter.submitList(it) }
-                }
-                Result.Status.LOADING -> {
-                }
-                Result.Status.ERROR -> {
-                    //binding.progressBar.hide()
-                    //Snackbar.make(binding.root, result.message!!, Snackbar.LENGTH_LONG).show()
-                }
+        lifecycleScope.launch {
+            blogViewModel.getBlogs().collectLatest {
+                adapter.submitData(it)
             }
-        })
+        }
     }
 }

@@ -29,6 +29,4 @@ data class BlogEntity(
 
     @field:SerializedName("user")
     var user: MutableList<User> = arrayListOf()
-) {
-    override fun toString() = content
-}
+)

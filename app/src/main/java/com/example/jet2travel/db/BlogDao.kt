@@ -1,12 +1,12 @@
 package com.example.jet2travel.db
 
-import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 
 @Dao
 interface BlogDao {
     @Query("SELECT * FROM blogs")
-    fun getAll(): LiveData<List<BlogEntity>>
+    fun getAll(): PagingSource<Int, BlogEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(repositoryEntity: BlogEntity)

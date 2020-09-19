@@ -2,18 +2,18 @@ package com.example.jet2travel.blog
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jet2travel.databinding.ListItemBlogBinding
 import com.example.jet2travel.db.BlogEntity
 
-class BlogAdapter : ListAdapter<BlogEntity, RecyclerView.ViewHolder>(
+class BlogAdapter : PagingDataAdapter<BlogEntity, RecyclerView.ViewHolder>(
     BlogDiffCallback()
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PlantViewHolder(
+        return BlogViewHolder(
             ListItemBlogBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
@@ -21,11 +21,14 @@ class BlogAdapter : ListAdapter<BlogEntity, RecyclerView.ViewHolder>(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val plant = getItem(position)
-        (holder as PlantViewHolder).bind(plant)
+        val blog = getItem(position)
+        if (blog != null) {
+            (holder as BlogViewHolder).bind(blog)
+        }
+
     }
 
-    class PlantViewHolder(
+    class BlogViewHolder(
         private val binding: ListItemBlogBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 

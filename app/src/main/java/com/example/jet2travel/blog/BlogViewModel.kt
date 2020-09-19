@@ -1,14 +1,17 @@
 package com.example.jet2travel.blog
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.jet2travel.db.BlogEntity
-import com.example.jet2travel.db.Result
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class BlogViewModel@Inject constructor(private val blogRepository: BlogRepository):ViewModel() {
+class BlogViewModel@Inject constructor(private val repository: BlogRepository):ViewModel() {
 
-    fun getBlogs(): LiveData<Result<List<BlogEntity>>> {
-        return blogRepository.getBlogs()
+    fun getBlogs(): Flow<PagingData<BlogEntity>> {
+        return repository.getBlogs()
+            .cachedIn(viewModelScope)
     }
 }
